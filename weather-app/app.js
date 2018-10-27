@@ -1,4 +1,19 @@
 const request = require('request');
+const yargs = require('yargs');
+
+const argv = yargs
+.options({
+    a:{
+        demand: true,
+        alias: 'address',
+        describe: 'Address to fetch weather',
+        string: true
+    }
+}).help().alias('help','h').argv;
+
+//encode and decode string for url
+var address = encodeURIComponent(argv);
+console.log(address.toString());
 
 request({
     url:'http://www.mapquestapi.com/geocoding/v1/address?key=KQ2jsNksQts8jYzX1GvJHudpVyn6ZGhv&location=1430%20rancho%20hills%20dr',
