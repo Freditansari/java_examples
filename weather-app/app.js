@@ -1,5 +1,11 @@
-const request = require('request');
+
 const yargs = require('yargs');
+const geocode = require('./geocode');
+const weather = require('./weather');
+const request = require('request');
+
+var lat;
+var lon;
 
 const argv = yargs
 .options({
@@ -11,18 +17,28 @@ const argv = yargs
     }
 }).help().alias('help','h').argv;
 
-//encode and decode string for url
- 
-var encodedAddress= encodeURIComponent(argv.address);
 
-request({
-    url:`http://www.mapquestapi.com/geocoding/v1/address?key=KQ2jsNksQts8jYzX1GvJHudpVyn6ZGhv&location=${encodedAddress}`,
-    json: true
-}, (error, response, body) =>{
-    //console.log(JSON.stringify(body, undefined, 4));
-    console.log(`Address: ${body.results[0].locations[0].street}`);
-    console.log(`${body.results[0].locations[0].adminArea5Type}: ${body.results[0].locations[0].adminArea5}`);
-    console.log(`latitiude: ${body.results[0].locations[0].latLng.lat}`);
-    console.log(`latitiude: ${body.results[0].locations[0].latLng.lng}`);
 
+geocode.geocodeAddress(argv.address, (errorMessage, results)=>{
+    if(errorMessage){
+        console.log(errorMessage);
+    }
+    else{
+        
+        console.log(JSON.stringify(results, undefined, 2));
+        lat = results.latitude; 
+        lon = results.longitude;
+        weather.weatherForecast(lat,lon,(weatherResults)=>{
+            console.log(weatherResults);
+        });
+  
+    }
 });
+
+
+
+
+// weather.weatherForecast(lat,lon, (weatherError, weatherResults)=>{
+
+//     console.log(weatherResults);
+// });
