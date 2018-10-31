@@ -1,0 +1,10 @@
+1. create a function like mentioned in utils. js
+2. install mocha js in npm using npm i mocha --save-dev
+3. create test case like the on in utils.test.js
+4. change the package json "test": "mocha **/*.test.js"
+5. use npm test
+
+note:
+nodemon --exec 'npm test'(linux/mac)
+nodemon --exec "npm test"(windows) 
+to auto restart test case
